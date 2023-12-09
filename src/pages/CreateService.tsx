@@ -15,6 +15,7 @@ const CreateService: React.FC = () => {
   const [customPeriod, setCustomPeriod] = useState<string>("");
   const [isCustomPeriod, setIsCustomPeriod] = useState<boolean>(false);
   const { address, web3, activeChain } = useContext(Web3Context);
+  const [newServiceId, setNewServiceId] = useState<string>("");
 
   const { currencyToken } = useCurrencyToken();
 
@@ -77,7 +78,6 @@ const CreateService: React.FC = () => {
         </div>
         <TxButton
           asyncTask={async () => {
-            debugger
             if (!web3) return;
             if (!activeChain) return;
             try {
@@ -103,7 +103,8 @@ const CreateService: React.FC = () => {
                 default:
                   servicePeriod = 0;
               }
-              await subscryptContract.methods.registerNewService(servicePrice.toFixed(), servicePeriod).send({ from: address });
+              const tx = await subscryptContract.methods.registerNewService(servicePrice.toFixed(), servicePeriod).send({ from: address });
+              setNewServiceId(tx.events.ServiceRegistered.returnValues.serviceId)
             } catch (error) {
               console.error("Error creating service", error);
             }
@@ -111,6 +112,23 @@ const CreateService: React.FC = () => {
         >
           Create New Service
         </TxButton>
+        {
+          newServiceId.length ?
+          <div className="p-5 bg-emerald-300 rounded-lg opacity-80">
+            <h1 className="mb-4">Service Create Successfully! Service ID = {newServiceId}</h1>
+            <h1>Share this with your Audience</h1>
+            <h2 className="italic text-lg mt-2">
+              Visit 
+              <a
+                target="_blank"
+                href={`${import.meta.env.VITE_APP_DOMAIN}/services/${newServiceId}`}
+                className="underline"
+              >{` ${import.meta.env.VITE_APP_DOMAIN}/services/${newServiceId} `}</a>
+              to Subscribe!
+              </h2>
+          </div>
+          : null
+        }
       </div>
     </div>
   );

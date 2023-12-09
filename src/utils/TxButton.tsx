@@ -27,7 +27,6 @@ const TxButton = ({isDisabled, asyncTask, children, styles="greenButton"}: ITxBu
         setStatus("loading");
         try {
           const success = await asyncTask()
-          debugger
           if(!!success) setStatus("success")
           if(!success) setStatus("error")
         } catch (error) {
