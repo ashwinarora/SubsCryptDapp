@@ -1,7 +1,8 @@
 import { useState, useEffect, createContext } from "react";
 import Web3 from "web3";
+import allChains from "../ChainConfig";
 
-const supportedChains = [97]
+const supportedChains = Object.keys(allChains).map(chainId => Number(chainId))
 
 interface IWeb3Context {
   address: string;
@@ -29,7 +30,6 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setCurrentProvider(Web3.givenProvider);
     setWeb3(new Web3(Web3.givenProvider));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -44,7 +44,6 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       currentProvider.removeListener("accountsChanged");
       currentProvider.removeListener("chainChanged");
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentProvider]);
 
   const connectWallet = async () => {
