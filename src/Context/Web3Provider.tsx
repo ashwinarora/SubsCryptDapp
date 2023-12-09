@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import Web3 from "web3";
 import allChains from "../ChainConfig";
+import IChainConfig from "../ChainConfig/IChainConfig";
 
 const supportedChains = Object.keys(allChains).map(chainId => Number(chainId))
 
@@ -11,6 +12,7 @@ interface IWeb3Context {
   connectWallet: () => void;
   supportedChains: number[];
   switchChain: (chainIdHex: string) => void;
+  activeChain?: IChainConfig;
 }
 
 export const Web3Context = createContext<IWeb3Context>({
@@ -26,11 +28,17 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const [chainId, setChainId] = useState<number>(0);
   const [web3, setWeb3] = useState<Web3>();
   const [currentProvider, setCurrentProvider] = useState<any>();
+  const [activeChain, setActiveChain] = useState<IChainConfig>()
 
   useEffect(() => {
     setCurrentProvider(Web3.givenProvider);
     setWeb3(new Web3(Web3.givenProvider));
   }, []);
+
+  useEffect(() => {
+    if (!chainId) return
+    setActiveChain(allChains[chainId])
+  }, [chainId])
 
   useEffect(() => {
     if(!currentProvider) return;
@@ -47,7 +55,6 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   }, [currentProvider]);
 
   const connectWallet = async () => {
-    console.log(currentProvider)
     if (currentProvider) {
       const accounts = await currentProvider.request({
         method: "eth_requestAccounts",
@@ -70,7 +77,7 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <Web3Context.Provider value={{ address, chainId, connectWallet, web3, supportedChains, switchChain }}>
+    <Web3Context.Provider value={{ address, chainId, connectWallet, web3, supportedChains, switchChain, activeChain }}>
       {children}
     </Web3Context.Provider>
   );
