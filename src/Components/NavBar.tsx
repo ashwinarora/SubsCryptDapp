@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-sky-700 text-white p-4">
+    <div className="fixed top-0 left-0 right-0 bg-sky-700 text-white p-4 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-4xl font-semibold">SubsCrypt</div>
         <div className="flex items-center">
