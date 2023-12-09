@@ -17,7 +17,7 @@ const CreateService: React.FC = () => {
   const { address, web3, activeChain } = useContext(Web3Context);
   const [buttonStatus, setButtonStatus] = useState<EButtonStatus>("ready");
 
-  const currencyToken = useCurrencyToken();
+  const { currencyToken } = useCurrencyToken();
 
   const handlePeriodClick = (value: PeriodOption) => {
     setPeriod(value);
