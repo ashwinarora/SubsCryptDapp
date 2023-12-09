@@ -171,11 +171,12 @@ const FindService: React.FC = () => {
           <div className="flex justify-between items-center p-4 bg-white shadow-lg rounded-lg my-2">
             <div>
               <h3 className="text-lg font-bold">{service.provider}</h3>
-              <p className="text-gray-600">Renewed Every {secondsToString(Number(service.renewalPeriod))}</p>
+              <p className="text-sm text-gray-500">{service.numberOfSubscribers} subscribers</p>
             </div>
             <div className="text-right">
               <p className="text-lg font-semibold">{toHumanNumber(service.price, currencyToken.decimals)} {currencyToken.symbol}</p>
-              <p className="text-sm text-gray-500">{service.numberOfSubscribers} subscribers</p>
+              <p className="text-gray-600">Renewed Every {secondsToString(Number(service.renewalPeriod))}</p>
+              
             </div>
             <div>
               <span
