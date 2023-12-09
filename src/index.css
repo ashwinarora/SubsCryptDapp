@@ -24,5 +24,16 @@
       @apply border border-solid border-red-600;
     }
 
+    .redButton {
+      @apply flex mt-4 px-6 py-2 bg-red-500 text-white font-semibold
+      rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 
+      focus:ring-red-500 focus:ring-opacity-50;
+    }
+
+    .greenButton {
+      @apply flex mt-4 px-6 py-2 bg-green-500 text-white font-semibold
+      rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 
+      focus:ring-green-500 focus:ring-opacity-50;
+    }
     
   }

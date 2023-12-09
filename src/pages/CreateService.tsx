@@ -3,11 +3,11 @@ import useCurrencyToken from "../hooks/useCurrencyToken";
 import { Web3Context } from "../Context/Web3Provider";
 import SubsCrypt from "../abi/SubsCrypt.json";
 import { toRealNumber } from "../utils/utils";
+import TxButton from "../utils/TxButton";
 
 // Define a type for the period options
 type PeriodOption = "1_day" | "1_week" | "1_month" | "1_year" | "custom";
 
-type EButtonStatus = "ready" | "loading" | "success" | "error";
 
 const CreateService: React.FC = () => {
   const [price, setPrice] = useState<string>("");
@@ -15,7 +15,6 @@ const CreateService: React.FC = () => {
   const [customPeriod, setCustomPeriod] = useState<string>("");
   const [isCustomPeriod, setIsCustomPeriod] = useState<boolean>(false);
   const { address, web3, activeChain } = useContext(Web3Context);
-  const [buttonStatus, setButtonStatus] = useState<EButtonStatus>("ready");
 
   const { currencyToken } = useCurrencyToken();
 
@@ -76,15 +75,11 @@ const CreateService: React.FC = () => {
             />
           )}
         </div>
-
-        <button
-          className={`flex mt-4 px-6 py-2 bg-green-500 text-white font-semibold
-          rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 
-          focus:ring-green-500 focus:ring-opacity-50`}
-          onClick={async () => {
+        <TxButton
+          asyncTask={async () => {
+            debugger
             if (!web3) return;
             if (!activeChain) return;
-            setButtonStatus('loading');
             try {
               const subscryptContract = new web3.eth.Contract(SubsCrypt.abi as any,activeChain.subscryptAddress);
               const servicePrice = toRealNumber(price, currencyToken.decimals);
@@ -109,20 +104,13 @@ const CreateService: React.FC = () => {
                   servicePeriod = 0;
               }
               await subscryptContract.methods.registerNewService(servicePrice.toFixed(), servicePeriod).send({ from: address });
-              setButtonStatus('success');
             } catch (error) {
               console.error("Error creating service", error);
             }
           }}
         >
-          <span className="mx-auto">Create Service</span>
-          {buttonStatus === 'loading' && <div className="mr-3 border-4 border-blue-300 rounded-full w-7 h-7 border-t-white animate-spin"></div>}
-          {buttonStatus === 'success' && 
-            <svg fill="none" stroke="currentColor" className="w-7 h-7 mr-4 text-green-100 font-extrabold" strokeWidth={1.5} viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-            </svg>
-          }
-        </button>
+          Create New Service
+        </TxButton>
       </div>
     </div>
   );
