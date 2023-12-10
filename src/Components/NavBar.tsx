@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Web3Context } from "../Context/Web3Provider";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const {
@@ -31,7 +32,9 @@ const Navbar: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 right-0 bg-sky-700 text-white p-4 z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-4xl font-semibold">SubsCrypt</div>
+        <Link to="/">
+          <div className="text-4xl font-semibold">SubsCrypt</div>
+        </Link>
         <div className="flex items-center">
           {!!chainId && !supportedChains.includes(chainId) && (
             <button
