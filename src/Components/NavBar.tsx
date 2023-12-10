@@ -36,23 +36,23 @@ const Navbar: React.FC = () => {
           <div className="text-4xl font-semibold">SubsCrypt</div>
         </Link>
         <div className="flex items-center">
-          {!!chainId && !supportedChains.includes(chainId) && (
+          {/* {!!chainId && !supportedChains.includes(chainId) && (
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded"
               onClick={() => switchChain((97).toString(16))}
             >
               Switch To BSC
             </button>
-          )}
+          )} */}
           {address ? (
             <div className="relative flex flex-row">
-              <div className="flex flex-row border border-blue-300  rounded-lg mr-2">
+              {/* <div className="flex flex-row border border-blue-300  rounded-lg mr-2">
                 <span className="relative flex h-3 w-3 my-auto mx-1">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
                 </span>
                 <span className="h-full py-2 pr-2 rounded-md">Chain {chainId}</span>
-              </div>
+              </div> */}
               <input
                 type="text"
                 className="px-4 py-2 w-36 border rounded text-gray-700"
