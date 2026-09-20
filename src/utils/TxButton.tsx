@@ -35,9 +35,9 @@ const TxButton = ({isDisabled, asyncTask, children, styles="greenButton"}: ITxBu
       }}
     >
       <div className="mx-auto">{children}</div>
-      {status === 'loading' && <div className="mr-3 border-4 border-blue-300 rounded-full w-7 h-7 border-t-white animate-spin"></div>}
+      {status === 'loading' && <div aria-hidden="true" className="h-4 w-4 shrink-0 rounded-full border-2 border-current border-t-transparent opacity-80 motion-safe:animate-spin"></div>}
       {status === 'success' && 
-        <svg fill="none" stroke="currentColor" className="w-7 h-7 mr-4 text-green-100 font-extrabold" strokeWidth={1.5} viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg fill="none" stroke="currentColor" className="h-5 w-5 shrink-0 animate-pop" strokeWidth={2.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
         </svg>
       }

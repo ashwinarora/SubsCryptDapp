@@ -20,10 +20,12 @@ const MySubscriptions = () => {
   }, [chainId, address, activeChain])
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8">
-        <h1 className="text-5xl">My Subscriptions</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8 text-center">
+        <h1 className="page-title">My Subscriptions</h1>
+        <p className="page-subtitle">Everything you're subscribed to, and when it renews next.</p>
       </div>
+      <div className="stack-empty space-y-4" data-empty="No subscriptions to show yet. Find a service to subscribe to.">
       {
         mySubscriptionIds.map((subscriptionId) => {
           return (
@@ -31,6 +33,7 @@ const MySubscriptions = () => {
           )
         })
       }
+      </div>
     </div>
   )
 }

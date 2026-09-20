@@ -6,6 +6,17 @@ import useCurrencyToken from "../hooks/useCurrencyToken";
 import { secondsToString, toHumanNumber } from "../utils/utils";
 import TxButton from "../utils/TxButton";
 
+// Presentational labels for the raw data keys shown in each stat tile
+const LABELS: Record<string, string> = {
+  subscriptionId: "Subscription ID",
+  serviceId: "Service ID",
+  provider: "Provider",
+  price: "Price",
+  renewalPeriod: "Renewal period",
+  nextRenewal: "Next renewal in",
+  isActive: "Status",
+};
+
 const SubscriptionHandler = ({ subscriptionId }: { subscriptionId: string }) => {
   const { address, web3, chainId, activeChain } = useContext(Web3Context);
   const { currencyToken } = useCurrencyToken();
@@ -57,14 +68,24 @@ const SubscriptionHandler = ({ subscriptionId }: { subscriptionId: string }) => 
   }
 
   return(
-    <div className="bg-slate-200 rounded-2xl mb-4 p-4">
-      <div className="flex flex-wrap flex-row items-center justify-between mb-4 ">
+    <div className="card card-hover mb-4 overflow-hidden animate-fade-up">
+      <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3 sm:p-5 lg:grid-cols-4">
         {
           Object.entries(subscriptionData).map(([key, value]) => {
             return (
-              <div key={key} className="flex flex-col bg-sky-300 py-1 px-4 my-2 rounded-lg">
-                <span className="text-base">{key}</span>
-                <span className="text-lg text-right">
+              <div key={key} className={key === "provider" ? "stat col-span-2" : "stat"}>
+                <span className="stat-label">{LABELS[key] ?? key}</span>
+                <span
+                  className={
+                    key === "isActive"
+                      ? (value ? "badge-success self-start" : "badge-muted self-start")
+                      : key === "provider"
+                        ? "stat-value !font-mono !text-sm !font-medium"
+                        : "stat-value"
+                  }
+                  title={String(getDisplayString(key, value))}
+                >
+                  {key === "isActive" && <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${value ? "bg-emerald-500" : "bg-slate-400"}`} />}
                   {getDisplayString(key, value)}
                 </span>
               </div>
@@ -72,7 +93,7 @@ const SubscriptionHandler = ({ subscriptionId }: { subscriptionId: string }) => 
           })
         }
       </div>
-      <div className="flex flex-wrap flex-row items-center justify-start space-x-8 mb-4 ">
+      <div className="flex flex-wrap flex-row items-center justify-start gap-3 border-t border-slate-100 bg-slate-50/70 px-4 py-4 sm:px-5">
         <TxButton
             styles={subscriptionData.isActive ? "redButton" : "greenButton"}
             asyncTask={async () => {

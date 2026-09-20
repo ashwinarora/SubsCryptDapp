@@ -6,6 +6,7 @@ import SubsCrypt from "../abi/SubsCrypt.json";
 import useCurrencyToken from "../hooks/useCurrencyToken";
 import { secondsToString, toHumanNumber } from "../utils/utils";
 import TxButton from "../utils/TxButton";
+import { Search, Users } from "lucide-react";
 
 interface IService {
   provider: string,
@@ -142,25 +143,29 @@ const FindService: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8">
-        <h1 className="text-5xl">Find a Service</h1>
+    <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8 text-center">
+        <h1 className="page-title">Find a Service</h1>
+        <p className="page-subtitle">Look up a service by its ID to view details and subscribe.</p>
       </div>
       <div className="flex gap-2">
-        <input
-          type="search"
-          value={searchTerm}
-          onChange={(e) => {
-            const value = e.target.value;
-            if(isNaN(Number(value))) return;
-            setSearchTerm(value);
-            navigate(`/services/${value}`);
-          }}
-          placeholder="Search Service ID..."
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-        />
+        <div className="relative flex-1">
+          <Search aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => {
+              const value = e.target.value;
+              if(isNaN(Number(value))) return;
+              setSearchTerm(value);
+              navigate(`/services/${value}`);
+            }}
+            placeholder="Search Service ID..."
+            className="input pl-11 font-mono"
+          />
+        </div>
         <button
-          className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className="btn-primary shrink-0"
           onClick={fetchService}
         >
           Search
@@ -168,22 +173,24 @@ const FindService: React.FC = () => {
       </div>
       {
         service?.provider && <>
-          <div className="flex justify-between items-center p-4 bg-white shadow-lg rounded-lg my-2">
-            <div>
-              <h3 className="text-lg font-bold">{service.provider}</h3>
-              <p className="text-sm text-gray-500">{service.numberOfSubscribers} subscribers</p>
+          <div className="card card-hover my-6 flex flex-col gap-5 p-5 animate-pop sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6">
+            <div className="min-w-0 flex-1">
+              <span className="stat-label">Provider</span>
+              <h3 className="mt-1 break-all font-mono text-sm font-semibold text-ink-900 sm:text-base">{service.provider}</h3>
+              <p className="mt-2 inline-flex items-center gap-1.5 text-sm text-slate-500"><Users className="h-4 w-4" aria-hidden="true" />{service.numberOfSubscribers} subscribers</p>
             </div>
-            <div className="text-right">
-              <p className="text-lg font-semibold">{toHumanNumber(service.price, currencyToken.decimals)} {currencyToken.symbol}</p>
-              <p className="text-gray-600">Renewed Every {secondsToString(Number(service.renewalPeriod))}</p>
+            <div className="text-left sm:text-right">
+              <p className="font-display text-2xl font-extrabold text-ink-900">{toHumanNumber(service.price, currencyToken.decimals)} <span className="text-base font-semibold text-slate-500">{currencyToken.symbol}</span></p>
+              <p className="text-sm text-slate-500">Renewed Every {secondsToString(Number(service.renewalPeriod))}</p>
               
             </div>
             <div>
               <span
-                className={`inline-block px-2 py-1 text-xs font-semibold text-white rounded-full ${
-                  service.isActive ? 'bg-green-400' : 'bg-red-400'
+                className={`${
+                  service.isActive ? 'badge-success' : 'badge-danger'
                 }`}
               >
+                <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${service.isActive ? 'bg-emerald-500' : 'bg-rose-500'}`} />
                 {service.isActive ? 'Active' : 'Inactive'}
               </span>
             </div>
