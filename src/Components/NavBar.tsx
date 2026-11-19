@@ -9,8 +9,6 @@ const Navbar: React.FC = () => {
     connectWallet,
     web3,
     chainId,
-    supportedChains,
-    switchChain,
   } = useContext(Web3Context);
 
   useEffect(() => {
