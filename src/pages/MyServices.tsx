@@ -20,10 +20,12 @@ const MyServices = () => {
   }, [chainId, address, activeChain])
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8">
-        <h1 className="text-5xl">My Services</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8 text-center">
+        <h1 className="page-title">My Services</h1>
+        <p className="page-subtitle">Services you provide, their subscribers, and funds ready to withdraw.</p>
       </div>
+      <div className="stack-empty space-y-4" data-empty="No services to show yet. Register a new service to get started.">
       {
         myServiceIds.map((serviceId) => {
           return (
@@ -31,6 +33,7 @@ const MyServices = () => {
           )
         })
       }
+      </div>
     </div>
   )
 }

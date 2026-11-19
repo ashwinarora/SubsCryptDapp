@@ -4,6 +4,7 @@ import { Web3Context } from "../Context/Web3Provider";
 import SubsCrypt from "../abi/SubsCrypt.json";
 import { toRealNumber } from "../utils/utils";
 import TxButton from "../utils/TxButton";
+import { CheckCircle2, ExternalLink } from "lucide-react";
 
 // Define a type for the period options
 type PeriodOption = "1_day" | "1_week" | "1_month" | "1_year" | "custom";
@@ -25,25 +26,31 @@ const CreateService: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mx-auto w-full flex flex-col items-center space-y-2">
-        <h1 className="text-5xl">Become a Provider</h1>
-        <h2 className="text-3xl">Register a new Service</h2>
+    <div className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto w-full flex flex-col items-center space-y-2 mb-8 text-center">
+        <h1 className="page-title">Become a Provider</h1>
+        <h2 className="page-subtitle">Register a new Service</h2>
       </div>
-      <div className="flex flex-col gap-4">
-        <label htmlFor="price" className="text-lg font-semibold">
+      <div className="card flex flex-col gap-6 p-5 sm:p-8">
+        <label htmlFor="price" className="label">
           Price of Service
-          <input
-            type="number"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          <div className="relative mt-2">
+            <input
+              type="number"
+              id="price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="input pr-20 font-mono"
+              placeholder="0.00"
+            />
+            <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-slate-400">
+              {currencyToken?.symbol}
+            </span>
+          </div>
         </label>
         <div>
-          <label className="text-lg font-semibold">Renewal Period</label>
-          <div className="flex gap-2 mt-1">
+          <label className="label">Renewal Period</label>
+          <div className="flex flex-wrap gap-2 mt-2">
             {(["1 Day", "1 Week", "1 Month", "1 Year", "Custom"] as const).map(
               (p) => {
                 const value: PeriodOption = p
@@ -54,9 +61,9 @@ const CreateService: React.FC = () => {
                     key={p}
                     type="button"
                     onClick={() => handlePeriodClick(value)}
-                    className={`px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md focus:outline-none ${
+                    className={`chip ${
                       period === value
-                        ? "ring-2 ring-offset-2 ring-blue-500"
+                        ? "chip-active"
                         : ""
                     }`}
                   >
@@ -72,11 +79,12 @@ const CreateService: React.FC = () => {
               placeholder="Enter custom period in Seconds"
               value={customPeriod}
               onChange={(e) => setCustomPeriod(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="input mt-3 font-mono animate-fade-up"
             />
           )}
         </div>
         <TxButton
+          styles="btn-primary w-full !py-3"
           asyncTask={async () => {
             if (!web3) return;
             if (!activeChain) return;
@@ -114,16 +122,19 @@ const CreateService: React.FC = () => {
         </TxButton>
         {
           newServiceId.length ?
-          <div className="p-5 bg-emerald-300 rounded-lg opacity-80">
-            <h1 className="mb-4">Service Create Successfully! Service ID = {newServiceId}</h1>
-            <h1>Share this with your Audience</h1>
-            <h2 className="italic text-lg mt-2">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-900 animate-pop">
+            <h1 className="mb-3 flex items-center gap-2 font-display text-lg font-bold">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
+              Service Create Successfully! Service ID = {newServiceId}
+            </h1>
+            <h1 className="text-sm font-semibold text-emerald-800">Share this with your Audience</h1>
+            <h2 className="mt-2 text-sm text-emerald-800">
               Visit 
               <a
                 target="_blank"
                 href={`${import.meta.env.VITE_APP_DOMAIN}/services/${newServiceId}`}
-                className="underline"
-              >{` ${import.meta.env.VITE_APP_DOMAIN}/services/${newServiceId} `}</a>
+                className="inline-flex items-center gap-1 break-all rounded-md bg-white/70 px-2 py-0.5 font-mono text-xs font-medium text-emerald-700 underline decoration-emerald-300 underline-offset-2 transition-colors hover:bg-white hover:text-emerald-900"
+              >{` ${import.meta.env.VITE_APP_DOMAIN}/services/${newServiceId} `}<ExternalLink className="h-3 w-3" aria-hidden="true" /></a>
               to Subscribe!
               </h2>
           </div>
